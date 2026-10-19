@@ -14,13 +14,16 @@ ARG SITE_INDEXING=false
 ENV SITE_INDEXING=$SITE_INDEXING
 ARG OPEN_PANEL_CLIENT_ID
 ENV OPEN_PANEL_CLIENT_ID=$OPEN_PANEL_CLIENT_ID
+ARG REQUIRE_PRIVATE_CONFIG=false
+ENV REQUIRE_PRIVATE_CONFIG=$REQUIRE_PRIVATE_CONFIG
 ENV NEXT_TELEMETRY_DISABLED=1
 # Optional private inputs are mounted only for this build step. Raw inputs
 # are not copied into image layers or the final standalone application.
 RUN --mount=type=secret,id=site_config --mount=type=secret,id=pricing_workbook \
-    if [ -f /run/secrets/site_config ]; then export SITE_CONFIG_PATH=/run/secrets/site_config; fi; \
-    if [ -f /run/secrets/pricing_workbook ]; then export PRICING_WORKBOOK_PATH=/run/secrets/pricing_workbook; fi; \
-    npm run build
+    --mount=type=secret,id=pricing_workbook_base64 \
+    --mount=type=secret,id=SITE_URL --mount=type=secret,id=SITE_INDEXING \
+    --mount=type=secret,id=OPEN_PANEL_CLIENT_ID --mount=type=secret,id=REQUIRE_PRIVATE_CONFIG \
+    node scripts/build-with-secrets.mjs
 
 FROM node:22-alpine AS runner
 WORKDIR /app

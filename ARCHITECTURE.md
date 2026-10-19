@@ -35,6 +35,8 @@ The browser dispatches typed, fixed-choice events without form data. The optiona
 
 Standalone output is cleaned of dotenv files by the post-build script. Docker excludes local inputs and generated output, mounts private configuration as optional build secrets, and copies only the standalone application and static assets into the runtime image. Build secrets are not automatically cache-busting. Runtime credentials must be provided by the deployment environment.
 
+`scripts/build-with-secrets.mjs` adapts file secrets to the generator inputs. It accepts a raw workbook or its base64 representation, never both, reads an explicit allowlist of public build settings, and removes the decoded temporary workbook even when the build fails. `REQUIRE_PRIVATE_CONFIG=true` rejects missing private inputs and forced example defaults. This allows text-only hosting dashboards without embedding private source files in Git or image layers.
+
 ## Search and social metadata
 
 `lib/seo.ts` builds per-page metadata and the entity graph. Optional SEO configuration fields have defaults for older site files. `scripts/seo-policy.mjs` validates `SITE_INDEXING` and `SITE_URL`, then generation writes the normalised origin and indexing decision into ignored `lib/seo.generated.json`. Metadata, HTTP headers, robots.txt, the sitemap and JSON-LD consume that snapshot so runtime settings cannot disagree with prerendered pages. Rebuild to change the mode or origin.

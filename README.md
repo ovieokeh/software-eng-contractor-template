@@ -142,6 +142,8 @@ docker run --rm -p 3000:3000 --env-file .env.production contractor-site
 
 Raw private inputs and dotenv files are excluded from the Docker build context. Secret mounts supply inputs only during generation; their rendered content remains public. If changing a BuildKit secret's contents, rebuild with `--no-cache` because secret contents do not invalidate Docker's cache.
 
+For hosts with text-only build secrets, supply the JSON as `site_config` and the workbook encoded as base64 as `pricing_workbook_base64` instead of `pricing_workbook`. Base64 is transport encoding, not encryption: use BuildKit secrets, never ordinary build arguments for these contents. The adapter decodes the workbook into a temporary file and removes it on success or failure. Public build settings (`SITE_URL`, `SITE_INDEXING`, `OPEN_PANEL_CLIENT_ID`) can also arrive as named file secrets, as on Coolify with BuildKit secrets enabled. Set `REQUIRE_PRIVATE_CONFIG=true` as a build argument or file secret for a real deployment to reject missing private inputs rather than build the examples. Supply email credentials only at runtime. Changing any build secret still requires a cache-free rebuild.
+
 Use `npm run build` so the post-build cleanup removes any dotenv files copied into standalone output. The contact endpoint has a process-local delivery cap; add a shared rate limit at the hosting layer for a public or replicated deployment. There is no database, payment processing or subscription management.
 
 ## Development
