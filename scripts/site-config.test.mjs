@@ -53,9 +53,42 @@ test("public configuration rejects extra fields, secret-shaped fields and unsafe
     (s) => {
       s.phoneCountry = "INVALID";
     },
+    (s) => {
+      s.brand.logoUrl = "javascript:alert(1)";
+    },
+    (s) => {
+      s.brand.profiles = [
+        { label: "Profile", url: "https://user:secret@example.com" },
+      ];
+    },
+    (s) => {
+      s.seo.imageUrl = "https://example.com/image.png";
+    },
+    (s) => {
+      s.seo = null;
+    },
+    (s) => {
+      s.seo = [];
+    },
   ]) {
     const config = structuredClone(example);
     mutate(config);
     assert.throws(() => validateSiteConfig(config));
   }
+});
+
+test("existing site files get optional SEO defaults without losing custom values", () => {
+  const old = structuredClone(example);
+  delete old.seo;
+  delete old.brand.logoUrl;
+  delete old.brand.profiles;
+  const config = validateSiteConfig(old);
+  assert.equal(config.seo.title, "");
+  assert.deepEqual(config.brand.profiles, []);
+  config.seo = {
+    title: "Custom title",
+    imageUrl: "https://example.com/card.jpg",
+    imageAlt: "Custom preview",
+  };
+  assert.equal(validateSiteConfig(config).seo.title, "Custom title");
 });

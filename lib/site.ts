@@ -9,8 +9,18 @@ type SiteConfig = {
     personShortName: string;
     email: string;
     registration: string;
+    logoUrl: string;
+    profiles: { label: string; url: string }[];
   };
   locale: string;
+  seo: {
+    title: string;
+    description: string;
+    privacyTitle: string;
+    privacyDescription: string;
+    imageUrl: string;
+    imageAlt: string;
+  };
   currency: string;
   phoneCountry: string;
   hero: { heading: string; emphasis: string; introduction: string };

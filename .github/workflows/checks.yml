@@ -1,0 +1,45 @@
+name: Checks
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - mode: preview
+            origin: http://localhost:3000
+            indexing: "false"
+          - mode: production
+            origin: https://contractor.example.com
+            indexing: "true"
+    name: Verify (${{ matrix.mode }})
+    env:
+      TEMPLATE_DEFAULTS: "1"
+      SITE_URL: ${{ matrix.origin }}
+      SITE_INDEXING: ${{ matrix.indexing }}
+      TEST_PRODUCTION: "1"
+      TEST_PORT: "3000"
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run typecheck
+      - run: npm run build
+      - run: cp -R .next/static .next/standalone/.next/static
+      - run: npm test

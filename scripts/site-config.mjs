@@ -11,8 +11,18 @@ const shape = {
     personShortName: "",
     email: "",
     registration: "",
+    logoUrl: "",
+    profiles: [{ label: "", url: "" }],
   },
   locale: "",
+  seo: {
+    title: "",
+    description: "",
+    privacyTitle: "",
+    privacyDescription: "",
+    imageUrl: "",
+    imageAlt: "",
+  },
   currency: "",
   phoneCountry: "",
   hero: { heading: "", emphasis: "", introduction: "" },
@@ -67,7 +77,38 @@ function https(value, label) {
 }
 
 export function validateSiteConfig(value) {
+  // Existing deployments can adopt the optional additions without migrating files.
+  value = structuredClone(value);
+  if (value?.brand && typeof value.brand === "object") {
+    value.brand = { logoUrl: "", profiles: [], ...value.brand };
+  }
+  if (value && typeof value === "object") {
+    if (
+      value.seo !== undefined &&
+      (!value.seo || typeof value.seo !== "object" || Array.isArray(value.seo))
+    )
+      throw new Error("site.seo must be an object");
+    value.seo = {
+      title: "",
+      description: "",
+      privacyTitle: "",
+      privacyDescription: "",
+      imageUrl: "",
+      imageAlt: "",
+      ...value.seo,
+    };
+  }
   check(value, shape, "site");
+  if (value.brand.logoUrl) https(value.brand.logoUrl, "brand.logoUrl");
+  for (const profile of value.brand.profiles) {
+    if (!profile.label.trim()) throw new Error("Profile labels are required");
+    https(profile.url, "brand.profiles.url");
+  }
+  if (value.seo.imageUrl) {
+    https(value.seo.imageUrl, "seo.imageUrl");
+    if (!value.seo.imageAlt.trim())
+      throw new Error("seo.imageAlt is required for a custom image");
+  }
   for (const key of ["name", "wordmarkLead", "personName", "personShortName"])
     if (!value.brand[key].trim()) throw new Error(`brand.${key} is required`);
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.brand.email))

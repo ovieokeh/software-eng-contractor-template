@@ -35,6 +35,14 @@ The browser dispatches typed, fixed-choice events without form data. The optiona
 
 Standalone output is cleaned of dotenv files by the post-build script. Docker excludes local inputs and generated output, mounts private configuration as optional build secrets, and copies only the standalone application and static assets into the runtime image. Build secrets are not automatically cache-busting. Runtime credentials must be provided by the deployment environment.
 
+## Search and social metadata
+
+`lib/seo.ts` builds per-page metadata and the entity graph. Optional SEO configuration fields have defaults for older site files. `scripts/seo-policy.mjs` validates `SITE_INDEXING` and `SITE_URL`, then generation writes the normalised origin and indexing decision into ignored `lib/seo.generated.json`. Metadata, HTTP headers, robots.txt, the sitemap and JSON-LD consume that snapshot so runtime settings cannot disagree with prerendered pages. Rebuild to change the mode or origin.
+
+`pageMetadata` returns a complete metadata object for each route to avoid Next.js's shallow merging retaining homepage descriptions on other pages. `app/social-image/route.tsx` uses a static route rather than a file-based metadata image convention so it cannot override a configured custom image URL. Its PNG is prerendered and cached, with a content hash in metadata URLs to refresh changed brand/title content (bump the card revision when changing its design); metadata links to the custom URL instead when present. No arbitrary remote images are fetched server-side.
+
+Entity IDs use canonical-origin fragments. Service URLs resolve to visible cards. The logo and personal profiles are shared by the page and structured data; profiles belong to the person. No business location or additional commercial terms are inferred. `.github/workflows/checks.yml` verifies preview and production builds, including metadata, image responses and crawl controls in `tests/seo.spec.ts`.
+
 ## Extending the template
 
 Add or rename services in configuration; cards, enquiry options and booking labels derive from the same list. Keep provider-side question options in sync. Change shared types and validation together when adding configuration fields. Different commercial models belong in the pricing schema and landing component, rather than a collection of unused route or audience flags.

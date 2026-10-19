@@ -1,8 +1,9 @@
 import type { MetadataRoute } from "next";
+import { deployment } from "@/lib/seo";
 export default function sitemap(): MetadataRoute.Sitemap {
-  if (!process.env.SITE_URL) return [];
+  if (!deployment.indexable || !deployment.origin) return [];
   return [
-    { url: process.env.SITE_URL },
-    { url: new URL("/privacy", process.env.SITE_URL).toString() },
+    { url: new URL("/", deployment.origin).href },
+    { url: new URL("/privacy", deployment.origin).href },
   ];
 }

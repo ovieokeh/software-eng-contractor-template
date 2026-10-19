@@ -15,4 +15,5 @@ private/
 outputs/
 lib/site.generated.json
 lib/pricing.generated.json
+lib/seo.generated.json
 app/icon.svg

@@ -3,16 +3,22 @@ import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { loadConfigEnv } from "./config-env.mjs";
 import { validateSiteConfig } from "./site-config.mjs";
+import { seoPolicy } from "./seo-policy.mjs";
 
 const root = new URL("../", import.meta.url);
 await loadConfigEnv(root);
 try {
+  const deployment = seoPolicy(process.env);
   const source =
     process.env.TEMPLATE_DEFAULTS === "1"
       ? "config/site.example.json"
       : process.env.SITE_CONFIG_PATH || "config/site.example.json";
   const site = validateSiteConfig(
     JSON.parse(await readFile(resolve(fileURLToPath(root), source), "utf8")),
+  );
+  await writeFile(
+    new URL("lib/seo.generated.json", root),
+    JSON.stringify(deployment, null, 2) + "\n",
   );
   await writeFile(
     new URL("lib/site.generated.json", root),

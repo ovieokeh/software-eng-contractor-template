@@ -10,6 +10,7 @@ export function ExperienceHighlights({ id = "experience" }: { id?: string }) {
     >
       <div className="site-section-lead">
         <h2 id={`${id}-heading`}>The experience you get</h2>
+        <p>Work directly with {site.brand.personName}.</p>
         <p>{site.experience.introduction}</p>
       </div>
       <ul className="site-experience-grid">

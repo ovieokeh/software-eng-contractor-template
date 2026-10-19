@@ -1,13 +1,14 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { site } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: `Privacy policy | ${site.brand.name}`,
-  description: `How ${site.brand.name} handles enquiries and personal data.`,
-  alternates: { canonical: "/privacy" },
-};
+export const metadata = pageMetadata(
+  "/privacy",
+  site.seo.privacyTitle || "Privacy policy",
+  site.seo.privacyDescription ||
+    `How ${site.brand.name} handles enquiries and personal data.`,
+);
 
 export default function PrivacyPage() {
   return (

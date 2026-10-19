@@ -71,7 +71,7 @@ export function LandingPage() {
           </div>
           <ul className="contractor-work-grid">
             {services.map((service) => (
-              <li key={service.id}>
+              <li key={service.id} id={`service-${service.id}`}>
                 <h3>
                   <BookingLink
                     placement="work"

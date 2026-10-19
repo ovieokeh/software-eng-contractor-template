@@ -1,5 +1,5 @@
 import { site } from "@/lib/site";
-import type { Metadata } from "next";
+import { homeTitle, homeDescription, pageMetadata } from "@/lib/seo";
 import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
 import { AnalyticsBridge } from "@/components/analytics-bridge";
 import "./globals.css";
@@ -17,18 +17,7 @@ const plexMono = IBM_Plex_Mono({
   display: "swap",
   variable: "--font-plex-mono",
 });
-export const metadata: Metadata = {
-  metadataBase: new URL(process.env.SITE_URL || "http://localhost:3000"),
-  title: `${site.brand.name} | Engineering support for teams`,
-  description: `Engineering help from ${site.brand.personName} for features, integrations and blocked releases. Extra capacity for the work your team needs to ship.`,
-  alternates: { canonical: "/" },
-  openGraph: {
-    title: `${site.brand.name} | Engineering support for teams`,
-    description: `Work directly with ${site.brand.personName}. Experienced engineering support in your codebase, tools and review process.`,
-    type: "website",
-    locale: site.locale.replaceAll("-", "_"),
-  },
-};
+export const metadata = pageMetadata("/", homeTitle, homeDescription);
 const themeScript = `try{const t=localStorage.getItem('studio-theme');document.documentElement.dataset.theme=t||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch{}`;
 export default function RootLayout({
   children,

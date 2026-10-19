@@ -8,6 +8,11 @@ export function SiteFooter() {
       </div>
       <nav className="footer-links" aria-label="Footer">
         <a href="/privacy">Privacy</a>
+        {site.brand.profiles.map((profile) => (
+          <a key={profile.url} href={profile.url} rel="me">
+            {profile.label}
+          </a>
+        ))}
       </nav>
       <div className="footer-legal">
         <span>

@@ -13,6 +13,15 @@ export function SiteHeader({
       </a>
       <header className="site-header flex items-center justify-between gap-6">
         <a href="/" className="wordmark" aria-label={`${site.brand.name} home`}>
+          {site.brand.logoUrl && (
+            <img
+              src={site.brand.logoUrl}
+              alt=""
+              width="32"
+              height="32"
+              style={{ objectFit: "contain" }}
+            />
+          )}
           {site.brand.wordmarkLead}
           <span>{site.brand.wordmarkRest}</span>
           <span className="brand-square" aria-hidden="true" />

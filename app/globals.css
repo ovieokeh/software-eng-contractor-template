@@ -91,7 +91,7 @@ a:hover {
   align-items: center;
   gap: 5px;
 }
-.wordmark > span:first-child {
+.wordmark > span:not(.brand-square) {
   font-weight: 400;
 }
 .brand-square {

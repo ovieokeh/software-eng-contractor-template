@@ -1,4 +1,5 @@
 import { baseURL } from "./test-url";
+import { deployment } from "../lib/seo";
 import { site } from "../lib/site";
 import { test, expect } from "@playwright/test";
 import { experienceHighlights } from "../lib/experience-highlights";
@@ -45,7 +46,7 @@ test("homepage, privacy page and sitemap use straightforward canonical routes", 
   );
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
     "href",
-    baseURL,
+    deployment.origin!,
   );
   await page.getByRole("link", { name: "Privacy", exact: true }).click();
   await expect(page).toHaveURL(`${baseURL}/privacy`);
@@ -55,7 +56,9 @@ test("homepage, privacy page and sitemap use straightforward canonical routes", 
   await page.getByRole("link", { name: `${site.brand.name} home` }).click();
   await expect(page).toHaveURL(`${baseURL}/`);
   const sitemap = await request.get("/sitemap.xml");
-  expect(await sitemap.text()).toContain(`${baseURL}/privacy`);
+  if (deployment.indexable)
+    expect(await sitemap.text()).toContain(`${deployment.origin}/privacy`);
+  else expect(await sitemap.text()).not.toContain("<loc>");
   expect(
     (await request.get("/unconfigured-page", { maxRedirects: 0 })).status(),
   ).toBe(404);

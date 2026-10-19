@@ -6,7 +6,9 @@
     "personName": "Your Name",
     "personShortName": "Your Name",
     "email": "hello@example.com",
-    "registration": ""
+    "registration": "",
+    "logoUrl": "",
+    "profiles": []
   },
   "availability": "Describe your working hours, time zone and typical response time here.",
   "experience": {
@@ -74,5 +76,13 @@
       "title": "Unblock delivery",
       "short": "Help with technical bottlenecks, reliability and maintainability."
     }
-  ]
+  ],
+  "seo": {
+    "title": "",
+    "description": "",
+    "privacyTitle": "",
+    "privacyDescription": "",
+    "imageUrl": "",
+    "imageAlt": ""
+  }
 }

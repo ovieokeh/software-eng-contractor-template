@@ -1,8 +1,10 @@
 import type { MetadataRoute } from "next";
+import { deployment } from "@/lib/seo";
 export default function robots(): MetadataRoute.Robots {
-  const origin = process.env.SITE_URL;
+  const { origin, indexable } = deployment;
   return {
     rules: { userAgent: "*", allow: "/", disallow: "/api/" },
-    ...(origin ? { sitemap: `${origin}/sitemap.xml` } : {}),
+    // Allow page crawling so bots can see noindex on previews.
+    ...(origin && indexable ? { sitemap: `${origin}/sitemap.xml` } : {}),
   };
 }
