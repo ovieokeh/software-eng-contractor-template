@@ -24,7 +24,12 @@ type SiteConfig = {
   currency: string;
   phoneCountry: string;
   hero: { heading: string; emphasis: string; introduction: string };
-  services: { id: string; title: string; short: string }[];
+  services: {
+    id: string;
+    title: string;
+    short: string;
+    enquiryLabel: string;
+  }[];
   pricingNote: string;
   availability: string;
   experience: {

@@ -26,7 +26,7 @@ const shape = {
   currency: "",
   phoneCountry: "",
   hero: { heading: "", emphasis: "", introduction: "" },
-  services: [{ id: "", title: "", short: "" }],
+  services: [{ id: "", title: "", short: "", enquiryLabel: "" }],
   pricingNote: "",
   availability: "",
   experience: {
@@ -79,6 +79,13 @@ function https(value, label) {
 export function validateSiteConfig(value) {
   // Existing deployments can adopt the optional additions without migrating files.
   value = structuredClone(value);
+  if (Array.isArray(value?.services)) {
+    value.services = value.services.map((service) =>
+      service && typeof service === "object" && !Array.isArray(service)
+        ? { enquiryLabel: "", ...service }
+        : service,
+    );
+  }
   if (value?.brand && typeof value.brand === "object") {
     value.brand = { logoUrl: "", profiles: [], ...value.brand };
   }
@@ -131,6 +138,9 @@ export function validateSiteConfig(value) {
       throw new Error("Service IDs must be unique slugs; other is reserved");
     if (!service.title.trim() || !service.short.trim())
       throw new Error("Service title and short description are required");
+    service.enquiryLabel = service.enquiryLabel.trim();
+    if ((service.enquiryLabel || service.title) === "Something else")
+      throw new Error('The enquiry label "Something else" is reserved');
     ids.add(service.id);
   }
   for (const item of value.experience.items) https(item.url, "experience.url");

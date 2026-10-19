@@ -45,6 +45,12 @@ test("public configuration rejects extra fields, secret-shaped fields and unsafe
       s.services = [];
     },
     (s) => {
+      s.services[0].enquiryLabel = 123;
+    },
+    (s) => {
+      s.services[0].enquiryLabel = "Something else";
+    },
+    (s) => {
       s.currency = "INVALID";
     },
     (s) => {
@@ -75,6 +81,20 @@ test("public configuration rejects extra fields, secret-shaped fields and unsafe
     mutate(config);
     assert.throws(() => validateSiteConfig(config));
   }
+});
+
+test("services can share an optional enquiry label without changing their titles", () => {
+  const input = structuredClone(example);
+  assert.equal(validateSiteConfig(input).services[0].enquiryLabel, "");
+  input.services[0].enquiryLabel = " Features and integrations ";
+  input.services[1].enquiryLabel = "Features and integrations";
+  const config = validateSiteConfig(input);
+  assert.equal(config.services[0].title, input.services[0].title);
+  assert.equal(
+    config.services[0].enquiryLabel,
+    config.services[1].enquiryLabel,
+  );
+  assert.equal(config.services[0].enquiryLabel, "Features and integrations");
 });
 
 test("existing site files get optional SEO defaults without losing custom values", () => {

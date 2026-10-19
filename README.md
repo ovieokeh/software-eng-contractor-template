@@ -79,6 +79,8 @@ Set `booking.url` to your public calendar URL. All contact links lead there exce
 
 `booking.question` is optional. Leave it empty for a plain link. For providers supporting URL prefills, such as Cal.com, set the exact question identifier and use service titles as the provider's option labels, plus “Something else”. Service links pass the corresponding label; general call links leave the answer unset. Verify this with your provider after configuration. The template does not store attendees or track confirmed bookings.
 
+When several service cards belong to one contact choice, give them the same optional `enquiryLabel`, for example `"Features and integrations"`. The email dropdown shows each distinct label once, in service order, and calendar links pass that exact label. Blank or omitted labels use the service title. The first service in each group supplies the email option ID; all service IDs remain valid for submissions and analytics. “Something else” is reserved for the automatic catch-all option.
+
 The email form uses Resend. Configure a verified sender in `CONTACT_FROM`, a destination in `CONTACT_TO`, `RESEND_API_KEY` and your origin in `SITE_URL`. Missing configuration produces an error with a direct email fallback. No real email is sent by the test suite.
 
 ## Search and social previews

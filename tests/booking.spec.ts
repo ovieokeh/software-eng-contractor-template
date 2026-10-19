@@ -2,6 +2,12 @@ import { pricing } from "../lib/pricing";
 import { baseURL } from "./test-url";
 import { site } from "../lib/site";
 import { bookingUrl } from "../lib/booking";
+import {
+  enquiryOptions,
+  enquiryInterest,
+  interestLabel,
+  isInterest,
+} from "../lib/content";
 import { test, expect } from "@playwright/test";
 import type { AnalyticsEvent } from "../lib/analytics";
 
@@ -88,7 +94,9 @@ test("optional prefill preserves existing URL parameters and encodes exact servi
     site.booking.url = "https://example.com/book?ref=website";
     site.booking.question = "help-with";
     const url = new URL(bookingUrl(site.services[0].id));
-    expect(url.searchParams.get("help-with")).toBe(site.services[0].title);
+    expect(url.searchParams.get("help-with")).toBe(
+      site.services[0].enquiryLabel || site.services[0].title,
+    );
     expect(url.searchParams.get("ref")).toBe("website");
     expect(bookingUrl()).toBe(site.booking.url);
     expect(bookingUrl("unknown-value")).toBe(site.booking.url);
@@ -96,6 +104,37 @@ test("optional prefill preserves existing URL parameters and encodes exact servi
     expect(bookingUrl(site.services[0].id)).toBe(site.booking.url);
   } finally {
     Object.assign(site.booking, original);
+  }
+});
+
+test("email choices group service cards using the same labels as calendar prefills", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page
+    .getByRole("button", { name: "Prefer email? Send an enquiry" })
+    .click();
+  const labels = [
+    ...new Set(
+      site.services.map((service) => service.enquiryLabel || service.title),
+    ),
+    "Something else",
+  ];
+  await expect(page.locator('select[name="interest"] option')).toHaveText(
+    labels,
+  );
+  for (const service of site.services) {
+    expect(isInterest(service.id)).toBe(true);
+    const option = enquiryOptions.find(
+      ({ id }) => id === enquiryInterest(service.id),
+    );
+    expect(option?.label).toBe(service.enquiryLabel || service.title);
+    expect(interestLabel(service.id)).toBe(option?.label);
+    if (site.booking.question) {
+      expect(
+        new URL(bookingUrl(service.id)).searchParams.get(site.booking.question),
+      ).toBe(option?.label);
+    }
   }
 });
 

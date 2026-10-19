@@ -45,4 +45,4 @@ Entity IDs use canonical-origin fragments. Service URLs resolve to visible cards
 
 ## Extending the template
 
-Add or rename services in configuration; cards, enquiry options and booking labels derive from the same list. Keep provider-side question options in sync. Change shared types and validation together when adding configuration fields. Different commercial models belong in the pricing schema and landing component, rather than a collection of unused route or audience flags.
+Add or rename services in configuration; cards, enquiry options and booking labels derive from the same list. An optional `enquiryLabel` groups several services into one email choice and calendar answer without changing their card titles. Distinct labels retain service order and the first matching service ID; all service IDs remain valid for submissions and analytics. Keep provider-side question options in sync. Change shared types and validation together when adding configuration fields. Different commercial models belong in the pricing schema and landing component, rather than a collection of unused route or audience flags.
