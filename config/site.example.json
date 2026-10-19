@@ -1,0 +1,78 @@
+{
+  "brand": {
+    "name": "Example Studio",
+    "wordmarkLead": "Example",
+    "wordmarkRest": " Studio",
+    "personName": "Your Name",
+    "personShortName": "Your Name",
+    "email": "hello@example.com",
+    "registration": ""
+  },
+  "availability": "Describe your working hours, time zone and typical response time here.",
+  "experience": {
+    "introduction": "A few examples of the work you could feature here. Replace these placeholders with your own experience before publishing.",
+    "credit": "Illustrative placeholders \u2014 these are not client claims.",
+    "items": [
+      {
+        "organisation": "Example project",
+        "url": "https://example.com",
+        "environment": "Features and integrations",
+        "summary": "Describe a specific problem you solved, your contribution and an outcome you can substantiate."
+      },
+      {
+        "organisation": "Another example project",
+        "url": "https://example.org",
+        "environment": "Engineering delivery",
+        "summary": "Explain how you helped a team deliver, improve reliability or simplify maintenance."
+      }
+    ]
+  },
+  "booking": {
+    "url": "https://example.com/book",
+    "question": ""
+  },
+  "analytics": {
+    "apiUrl": "",
+    "hostname": ""
+  },
+  "privacy": {
+    "updated": "Example \u2014 replace before publishing",
+    "introduction": "This is a placeholder, not a completed privacy notice. Describe your actual business, providers and data practices before accepting enquiries.",
+    "sections": [
+      {
+        "heading": "Contact and data handling",
+        "paragraphs": [
+          "Replace this section with your controller details, contact address, purposes, legal bases, providers, retention periods and applicable rights.",
+          "The template includes an optional email form, external booking links and opt-in analytics configuration. Review your deployed configuration when writing your notice."
+        ],
+        "links": []
+      }
+    ]
+  },
+  "locale": "en-GB",
+  "currency": "GBP",
+  "phoneCountry": "GB",
+  "hero": {
+    "heading": "Software engineering",
+    "emphasis": "for your next milestone.",
+    "introduction": "Independent engineering support for features, integrations and the work your team needs to ship."
+  },
+  "pricingNote": "Example monthly pricing. Replace with your payment and tax terms.",
+  "services": [
+    {
+      "id": "features",
+      "title": "Ship a feature",
+      "short": "A focused addition to your product, tested and ready to release."
+    },
+    {
+      "id": "integrations",
+      "title": "Connect systems",
+      "short": "APIs, webhooks and data flows that work together."
+    },
+    {
+      "id": "engineering",
+      "title": "Unblock delivery",
+      "short": "Help with technical bottlenecks, reliability and maintainability."
+    }
+  ]
+}

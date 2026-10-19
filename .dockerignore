@@ -1,0 +1,11 @@
+node_modules
+.DS_Store
+.next
+.git
+.env*
+test-results
+playwright-report
+private
+outputs
+lib/*.generated.json
+app/icon.svg

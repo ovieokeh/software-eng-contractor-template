@@ -1,0 +1,18 @@
+node_modules/
+.DS_Store
+.next/
+.env*
+!.env.example
+*.tsbuildinfo
+playwright-report/
+test-results/
+
+# Generated spreadsheet inspection output
+*.inspect.ndjson
+
+# Local identity, commercial inputs and generated public-facing data
+private/
+outputs/
+lib/site.generated.json
+lib/pricing.generated.json
+app/icon.svg
